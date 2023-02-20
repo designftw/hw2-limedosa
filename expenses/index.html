@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Expenses</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+	<!--
+		Copy the class spreadsheet and replace the URL below with your own spreadsheet so you can save!
+		Make your spreadsheet publicly writable so you can save without logging in.
+	  -->
+	  <ma-data v-model="expenses"
+	  src="https://docs.google.com/spreadsheets/d/1z6zAHPmiP0T1y1EtSmiYHNAe7mksbFXC_AflELZqZmg/edit#gid=0"
+	  :options='{
+		  headerRow: true,
+		  keys: ["title", "trinity_paid", "neo_paid", "trinity_paid_for_neo", "neo_paid_for_trinity"]
+	  }'></ma-data>
+
+	<!-- App UI here -->
+</div>
+
+<script src="index.js" type="module"></script>
+
+</body>
+</html>
