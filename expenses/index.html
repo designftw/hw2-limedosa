@@ -2,32 +2,129 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Expenses</title>
-	<link rel="stylesheet" href="style.css" />
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-	<center>
-		<h1>Exercise 4: Expenses</h1>
-	</center>
+
 	<div id="app">
 		<!--
 		Copy the class spreadsheet and replace the URL below with your own spreadsheet so you can save!
 		Make your spreadsheet publicly writable so you can save without logging in.
 	  -->
 		<ma-data v-model="expenses"
-			src="https://docs.google.com/spreadsheets/d/1z6zAHPmiP0T1y1EtSmiYHNAe7mksbFXC_AflELZqZmg/edit#gid=0"
+			src="https://docs.google.com/spreadsheets/d/121pxsJwJIgxlVvB8-qUPDQwyx1-slYiGUliYM6NF740/edit#gid=0"
 			:options='{
-		  headerRow: true,
+		  headerRow: false,
+		  range: "A3:F",
 		  keys: ["title", "trinity_paid", "neo_paid", "trinity_paid_for_neo", "neo_paid_for_trinity"]
 	  }'></ma-data>
 
+		<!-- Basic authentication UI (needed for saving) -->
+		<header>
+			<span v-if="expenses.user">
+				Logged in as {{ expenses.user.username }}
+				<button @click="expenses.logout()">Log out</button>
+			</span>
+			<button v-else @click="expenses.login()">Log in</button>
+		</header>
+
 		<!-- App UI here -->
 	</div>
+	<center>
+		<h1>Expenses App</h1>
+	</center>
+	<button>New Expense</button>
+	<!-- <button disabled>Submit</button> -->
 
 	<script src="index.js" type="module"></script>
+
+
+
+	<!-- <h4>Split Expenses</h4>
+
+		<form>
+			<label for="item">Item:</label>
+			<input type="text" id="item" name="item"><br>
+			<label for="price">Price:</label>
+			<input type="number" id="price" name="price"><br>
+			<label for="Neo">Neo's split:</label>
+			<input type="number" id="Neo" name="Neo" value=""> % <br>
+			<label for="Trinity">Trinity's split:</label>
+			<input type="number" id="Trinity" name="Trinity" value="">% <br>
+			<button type="submit">Add</button>
+			<button @click="addItem()">Save Progress</button> <!-- this allows for users to add items. -->
+
+	<!-- </form>
+		  <div>
+			<h3>Expense Summary: </h3>
+			<p>Item: <span id="result-item"></span></p>
+			<p>Total: $<span id="result-price"></span></p>
+			<p>Neo owes: $<span id="result-Neo"></span></p>
+			<p>Trinity owes: $<span id="result-Trinity"></span></p>
+		  </div> -->
+
+
+
+	<h3>Split Expenses</h3>
+
+	<form>
+		<label for="item">Item:</label>
+		<input type="text" id="item" name="item"><br>
+		<label for="price">Price:</label>
+		<input type="number" id="price" name="price"><br>
+		<label for="Neo">Neo's split:</label>
+		<input type="number" id="Neo" name="Neo" value=""> % <br>
+		<label for="Trinity">Trinity's split:</label>
+		<input type="number" id="Trinity" name="Trinity" value="">% <br>
+		<button type="submit">Add</button>
+		<button @click="addItem()">Add Item</button>
+		<button @click.prevent="saveData()">Save Progress</button>
+	</form>
+
+	<div>
+		<h3>Expense Summary: </h3>
+		<p>Item: <span id="result-item"></span></p>
+		<p>Total: $<span id="result-price"></span></p>
+		<p>Neo owes: $<span id="result-Neo"></span></p>
+		<p>Trinity owes: $<span id="result-Trinity"></span></p>
+	</div>
+
+	<!-- <h3>This code allows for each individual item to be split, from 0% to 100%, so one person can pay it all, pay -->
+		<!-- nothing, or pay for a portion of it. All expenses will be totaled at the end.</h3> -->
+
+	<script>
+		function saveData() {
+			const url = "https://docs.google.com/spreadsheets/d/121pxsJwJIgxlVvB8-qUPDQwyx1-slYiGUliYM6NF740/edit#gid=0";
+			const item = document.getElementById("item").value;
+			const price = document.getElementById("price").value;
+			const neoSplit = document.getElementById("Neo").value;
+			const trinitySplit = document.getElementById("Trinity").value;
+			const data = [[item, price, neoSplit, trinitySplit]];
+
+			fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer <960153453002-preoot63a65vdhiojcd7tg6aodvlhao9.apps.googleusercontent.com>",
+				},
+				body: JSON.stringify({
+					range: "Sheet1!A1:D1",
+					values: data,
+				}),
+			})
+				.then((response) => response.json())
+				.then((result) => console.log("Data saved:", result))
+				.catch((error) => console.error("ERRROR: Data Couldn't Be Saved", error));
+		}
+	</script>
+	</hgroup>
+	<a href="writeup.html">Differences between spreadsheet and this app</a>
+
+
 </body>
 
 </html>

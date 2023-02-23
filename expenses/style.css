@@ -6,8 +6,8 @@ table {
 }
 
 body {
-  background-color: rgb(43, 54, 59);
-  color: white;
+  background-color: rgb(197, 211, 218);
+  color: rgb(13, 12, 12);
 }
 
 
@@ -19,4 +19,19 @@ td, th {
 input {
 	box-sizing: border-box;
 	width: 100%;
+}
+button {
+	--color: hsl(253, 71%, 43%);
+	border: .1em solid var(--color);
+	background: transparent;
+	color: var(--color);
+}
+
+button:hover {
+	background: var(--color);
+	color: white;
+}
+
+button:active {
+	transform: scale(1.05);
 }
